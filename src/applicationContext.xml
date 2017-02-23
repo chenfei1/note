@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+		xmlns:jee="http://www.springframework.org/schema/jee"
+		xmlns:tx="http://www.springframework.org/schema/tx" 
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:mvc="http://www.springframework.org/schema/mvc" 
+		xmlns:jpa="http://www.springframework.org/schema/jpa"
+		xmlns:util="http://www.springframework.org/schema/util"  
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+			http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/tx/spring-jdbc-3.2.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/date/jpa/spring-jpa-1.3.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+			<!-- 从这里开始写-->
+	<bean id="dbcp"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="username" value="root"></property>
+		<property name="password" value="root"></property>
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql:///cloud_note?useUnicode=true&amp;charset=utf-8"></property>
+	</bean>
+	<bean id="ssf"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dbcp"></property>
+		<property name="mapperLocations" 
+			value="classpath:org/sgs/note/sql/*.xml"></property>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="org.sgs.note.dao"></property>
+		<!-- 自动诸如sqlsessionfactory -->
+	</bean>		
+	
+	<!--开启扫描，扫描Controller,Service组件  -->
+	<context:component-scan base-package="org.sgs.note"></context:component-scan>
+	<!-- handlermapping,支持@RequestMapping,@ResponseBody -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	
+
+</beans>
+
